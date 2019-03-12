@@ -38,9 +38,29 @@ body {
 }
 
 .hand {
+	/* transform origin, where rotation begins. 100% is the far right. */
+	transform-origin: 100%;
+
+	/* make the hands begin at '12 o'clock' */
+	transform: rotate(90deg);
+
+	/* the cubic function is designed to give a sort of snap-back to the clock hand */
+	transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+	transition: all 0.05s;
+
 	width: 50%;
 	height: 6px;
 	background: black;
 	position: absolute;
 	top: 50%;
+}
+
+.hour-hand {
+}
+
+.min-hand {
+}
+
+.second-hand {
+	background: red;
 }
