@@ -17,6 +17,7 @@ body {
 .panels {
 	min-height: 100vh;
 	overflow: hidden;
+	display: flex;
 }
 
 .panel {
@@ -32,6 +33,14 @@ body {
 	font-size: 20px;
 	background-size: cover;
 	background-position: center;
+
+	flex: 1; /* evenly distribute space */
+	justify-content: center;
+	align-items: center;
+
+	display: flex; /* we need to treat this item as a container as well */
+	flex-direction: column;
+
 }
 
 .panel1 {
@@ -59,6 +68,34 @@ body {
 	margin: 0;
 	width: 100%;
 	transition: transform 0.5s;
+
+	/* spaces our items, vertically, each segment taking up 1/3 */
+	display: flex;
+	flex: 1;
+	/* positioning the nested items */
+	justify-content: center;
+	align-items: center;
+}
+
+/* animate these frames from their inital position, out of frame, into view */
+.panel > *:first-child {
+	/* up and away */
+	transform: translateY(-100%);
+}
+
+.panel.open-active > *:first-child {
+	/* into frame */
+	transform: translateY(0);
+}
+
+.panel > *:last-child {
+	/* down and away */
+	transform: translateY(100%);
+}
+
+.panel.open-active > *:last-child {
+	/* down and away */
+	transform: translateY(0);
 }
 
 .panel p {
@@ -74,4 +111,6 @@ body {
 
 .panel.open {
 	font-size: 40px;
+	/* take up 5x space as other flex items */
+	flex: 5;
 }
