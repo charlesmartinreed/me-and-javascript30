@@ -34,24 +34,31 @@ searchInput.addEventListener('keyup', displayMatches);
 // displaying matches in the DOM
 function displayMatches() {
 	// 'this' refers to the value entered in the search input field
-	const matchArray = findMatches(this.value, cities);
-	console.log(matchArray);
+	if (this.value !== '') {
+		const matchArray = findMatches(this.value, cities);
 
-	// Add the results to the DOM
-	const html = matchArray.map(place => {
-		// this reg ex matches the word that was entered and replaces it with a span that has a class of h1 which provides our highlight styling
-		const regex = new RegExp(this.value, 'gi');
-		const cityName = place.city.replace(regex, `<span class="h1">${this.value}</span>`)
-		const stateName = place.state.replace(regex, `<span class="h1">${this.value}</span>`)
+		// Add the results to the DOM
+		const html = matchArray.map(place => {
+			// this reg ex matches the word that was entered and replaces it with a span that has a class of h1 which provides our highlight styling
+			const regex = new RegExp(this.value, 'gi');
+			const cityName = place.city.replace(regex, `<span class="h1">${this.value}</span>`)
+			const stateName = place.state.replace(regex, `<span class="h1">${this.value}</span>`)
 
-		return `
-			<li>
-				<span class="name">${cityName}, ${stateName}</span>
-				<span class="population">${numberWithCommas(place.population)}</span>
-			</li>
-		`;
-	}).join(''); /* turning the returned array and into a string */
-	suggestions.innerHTML = html;
+			return `
+				<li>
+					<span class="name">${cityName}, ${stateName}</span>
+					<span class="population">${numberWithCommas(place.population)}</span>
+				</li>
+			`;
+		}).join(''); /* turning the returned array and into a string */
+		suggestions.innerHTML = html;
+	} else {
+		suggestions.innerHTML = `
+		<li>Filter for a city</li>
+		<li>or a state</li>
+		`
+	}
+
 }
 
 function numberWithCommas(x) {
