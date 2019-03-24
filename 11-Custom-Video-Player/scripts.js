@@ -4,7 +4,7 @@ const video = player.querySelector('.viewer');
 const progress = player.querySelector('.progress');
 const progressBar = player.querySelector('.progress__filled');
 const toggle = player.querySelector('.toggle');
-const skipButtons = player.querySelector('[data-skip]');
+const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 
 
@@ -22,7 +22,23 @@ function togglePlay() {
 	// video[method]();
 }
 
+function updateButton() {
+	toggle.textContent = this.paused ? '►' : '❚ ❚';
+	// console.log('update button');
+}
+
+function skip() {
+	// DOM elements have a custom data attribute, data-skip, that specifies the duration by which we skip forward
+	// console.log(this.dataset);
+	video.currentTime += parseFloat(this.dataset.skip);
+}
 
 // Connect event listeners
 video.addEventListener('click', togglePlay);
+video.addEventListener('play', updateButton);
+video.addEventListener('pause', updateButton);
+
+skipButtons.forEach(button => button.addEventListener('click', skip));
+
+
 toggle.addEventListener('click', togglePlay);
