@@ -7,6 +7,8 @@ const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 
+const fullscreen = player.querySelector('#fullscreen__button');
+
 
 // Build our functions
 function togglePlay() {
@@ -63,6 +65,19 @@ function scrub(e) {
 	// console.log(e);
 }
 
+function handleFullscreen() {
+	//if not already fullscreen...
+	if (video.requestFullscreen) {
+		//no need to do anything special with the returned promise
+		video.requestFullscreen().then({}).catch(err => {
+			console.log("Error attempting to enable fullscreen mode", err.message, err.name);
+		});
+	} else {
+		// leave fullscreen when user taps button and full screen was already enabled
+		document.exitFullScreen();
+	}
+}
+
 // Connect event listeners
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
@@ -73,6 +88,19 @@ video.addEventListener('timeupdate', handleProgress);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 ranges.forEach(range => range.addEventListener('input', handleRangeUpdate));
 
+let mousedown = false;
 progress.addEventListener('click', scrub);
+// progress.addEventListener('mousemove', () => {
+// 	if(mousedown) {
+// 		scrub();
+// 	}
+// });
+// if mousedown is true, scrub. Else, return false, which will do nothing.
+progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
+
+progress.addEventListener('mousedown', () => mousedown = true);
+progress.addEventListener('mouseup', () => mousedown = false);
 
 toggle.addEventListener('click', togglePlay);
+
+fullscreen.addEventListener('click', handleFullscreen);
